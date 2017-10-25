@@ -1,0 +1,83 @@
+<div id="exchange-tab">
+  <div class="container-fluid" *ngIf="step == 1">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-4">
+        <div action="" class="exchange">
+          <div id="exchange-data" class="exchange-data">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-6 pl0">
+                  <div class="field field--gray field--fullwidth field--with-hint">
+                    <div class="field__hint field__hint">Currency</div>
+                    <select name="" [(ngModel)]="currency" (change)="updateMinAmount()">
+                      <option *ngFor="let curr of currencies" [value]="curr">{{dic[curr]}}</option>
+                    </select>
+                    <img src="assets/img/svg/arrow-down.svg" alt="">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="field field--gray field--fullwidth field--with-hint field--text-right">
+                    <div class="field__hint">Pay</div>
+                    <input type="text" [(ngModel)]="pay" (keyup)="updateReceive()">
+                  </div>
+                </div>
+                <div class="col-md-6 pr0">
+                  <div class="field field--gray field--fullwidth field--with-hint field--text-right">
+                    <div class="field__hint">Receive XMR</div>
+                    <input type="text" value="{{ receive | number:'1.3-3'}}" disabled id="exchange-receive">
+                  </div>
+                </div>
+                <div class="col-md-16 pl0 pr0">
+                  <div class="field field--gray field--fullwidth field--with-hint">
+                    <div class="field__hint">To</div>
+                    <input type="text" class="wallet-address" value="{{address | spread: 32}}" disabled>
+                  </div>
+                </div>
+                <div class="col-md-8 pl0">
+                  <a href="https://changelly.com" target="_blank" class="changelly green">Powered by <span
+                    class="underlined">Changelly</span></a>
+                </div>
+                <div class="col-md-8 pr0">
+                  <div class="btn btn--green btn--long btn--right" (click)="toExchangePayment()">
+                    <span>Exchange</span>
+                    <img src="assets/img/svg/arrow-right.svg" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid" *ngIf="step == 2">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-6">
+        <div id="exchange-payment" class="exchange-steps">
+          <div class="block block--white exchange-step">
+            <p>Send {{pay}} BTC to the provided address:</p>
+            <div class="field field--gray field--fullwidth">
+              <textarea id="exchange-address" [(ngModel)]="paymentAddress" disabled></textarea>
+            </div>
+            <div id="copy-exchange-address" appCopyOnClick onclick [copySource]="paymentAddress" class="btn btn--blue btn--small">Copy</div>
+            <div class="qr">
+              <app-qrcode [source]="paymentAddress"></app-qrcode>
+            </div>
+            <div class="exchange-status">
+              Transaction status
+            </div>
+            <div class="exchange-progress" style="background-image: url('assets/img/svg/load-exchange.svg')">{{paymentStatus}}</div>
+          </div>
+          <!--<div class="block block&#45;&#45;white block&#45;&#45;small exchange-step gray-medium">-->
+            <!--<div class="step__title">step 2</div>-->
+            <!--<div class="light">Wait a few minutes for blockchain configuration and exchange</div>-->
+          <!--</div>-->
+          <!--<div class="block block&#45;&#45;white block&#45;&#45;small exchange-step gray-medium">-->
+            <!--<div class="step__title">step 3</div>-->
+            <!--<div class="light">Receive ~ <b>500 XMR</b></div>-->
+          <!--</div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

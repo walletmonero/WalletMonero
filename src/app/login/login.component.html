@@ -1,0 +1,31 @@
+<header>
+  <div class="logo">
+    <a href="/"><img src="assets/img/svg/logo-wallet-monero.svg" alt=""></a>
+  </div>
+</header>
+<main>
+  <section class="main-banner" id="login-app">
+    <div class="main-banner__content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-7 col-md-offset-5 white tal">
+            <h3>Enter your private key</h3>
+            <div action="" class="login-form">
+              <div class="field-with-icon">
+                <input class="onscreenkeyboard" [ngClass]="{'invalid': !validate()}" [(ngModel)]="privatekey" type="password" placeholder="private key">
+                <div id="keyboard-trigger" class="field-icon"><img src="assets/img/svg/keybord.svg" alt=""></div>
+              </div>
+              <div (click)="tryLogin()" class="login btn btn--green btn--medium">Login</div>
+              <div class="note">Enter your 13-25 words<br>mnemonic seed or private key</div>
+              <!--<div class="note orange"></div>-->
+            </div>
+            <a href="/"><div class="btn btn--transparent btn--medium btn--left">
+              <span>Back</span>
+              <img src="assets/img/svg/arrow-left.svg" alt="">
+            </div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

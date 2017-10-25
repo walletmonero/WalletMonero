@@ -1,0 +1,25 @@
+<div id="app-state" class="hidden" data-app-state="login"></div>
+<section class="main-banner" id="login-app">
+  <div class="main-banner__content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-7 col-md-offset-5 white tal">
+          <h3>Enter your private key</h3>
+          <form action="" class="login-form">
+            <div class="field-with-icon">
+              <input class="onscreenkeyboard" v-bind:class="{invalid:!prevalid}" v-model="key" type="password" placeholder="private key" data-vd-type="required">
+              <div id="keyboard-trigger" class="field-icon"><img src="img/svg/keybord.svg" alt=""></div>
+            </div>
+            <div v-on:click="tryLogin" class="login btn btn--green btn--medium">Login</div>
+            <div class="note">Write whatever you want, any keys</div>
+            <div class="note orange">{{message}}</div>
+          </form>
+          <a href="/"><div class="btn btn--transparent btn--medium btn--left">
+            <span>Back</span>
+            <img src="img/svg/arrow-left.svg" alt="">
+          </div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,277 @@
+<div id="app-state" class="hidden" data-app-state="account"></div>
+<section class="account-banner">
+  <div class="account-banner__bg"></div>
+  <div class="account-banner__content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4 col-md-offset-9 tar">
+          <div class="white"><b class="current_balance">loading...</b> XMR</div>
+          <div class="white"><b>~ </b><b id="current_usd">loading...</b> USD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="account">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-3">
+        <div class="tabs">
+          <div class="tabs__labels">
+            <div class="tabs__label active" data-tab-label-index="0">
+              <div class="radio"><span></span></div>
+              <span>My accounts</span>
+            </div>
+            <div class="tabs__label" data-tab-label-index="1">
+              <div class="radio"><span></span></div>
+              <span>Transactions</span>
+            </div>
+            <div class="tabs__label" data-tab-label-index="2">
+              <div class="radio"><span></span></div>
+              <span>Send</span>
+            </div>
+            <div class="tabs__label" data-tab-label-index="3">
+              <div class="radio"><span></span></div>
+              <span>Exchange</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tabs__contents">
+    <div class="tabs__content active" data-tab-index="0">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-4">
+            <form action="" class="wallet-address">
+              <div class="wallet">
+                <div class="wallet__info">
+                  <div class="wallet__label">My wallet address</div>
+                  <div class="wallet__edit"><img src="img/svg/edit.svg" alt=""></div>
+                  <div class="wallet__balance"><span class="current_balance">0</span> XMR</div>
+                </div>
+                <div class="field-with-icon field--big field--gray">
+                  <input type="text" class="wallet-address" value="loading..." disabled>
+                  <input id="wallet-address" class="wallet-address" value="loading..." type="hidden" disabled>
+                  <div class="field-icon"><img id="toggle-qr" src="img/svg/qr.svg" alt=""></div>
+                </div>
+                <div id="copy-wallet-address" class="btn btn--white btn--extra-small">Copy</div>
+                <div class="clearfix"></div>
+                <div class="wallet__qr">
+                  <img id="qrimage" src="" alt="">
+                </div>
+              </div>
+            </form>
+            <div id="clear-cache" class="btn btn--green">Clear cache and logout</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tabs__content" data-tab-index="1">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-4">
+            <div class="btn btn--green" id="rescan">Fast Rescan</div>
+            <div class="btn btn--green" id="import-transactions">Import transactions</div>
+            <div class="field field--gray">
+              <input type="text" id="import-height" placeholder="Height to restore from">
+            </div>
+
+            <div id="import-progress"></div>
+            <table id="transactions-table" class="table transactions-table">
+              <tr class="table__head">
+                <th>Wallet</th>
+                <th>Amount</th>
+                <th>Transaction ID</th>
+                <th>Date</th>
+                <th>Time</th>
+              </tr>
+              <tr class="table__empty-tr"></tr>
+
+              <!--<tr class="hidden">-->
+                <!--<td>Sent</td>-->
+                <!--<td>-->
+                  <!--<div class="transactions-table__xmr bold">15687 XMR</div>-->
+                  <!--<div class="transactions-table__usd">5 000 USD</div>-->
+                <!--</td>-->
+                <!--<td>21390665</td>-->
+                <!--<td>23.12.2017</td>-->
+                <!--<td data-transaction-id="123123123">-->
+                  <!--<div class="transactions-table__time">16:06:06</div>-->
+                  <!--<div class="transactions-table__details">details</div>-->
+                <!--</td>-->
+              <!--</tr>-->
+            </table>
+            <div class="load-more" id="transaction-load">load more</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="send-transaction" class="tabs__content" data-tab-index="2">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-4">
+            <form action="" class="wallet-address">
+              <div class="wallet wallet--send">
+                <div class="wallet__info">
+                  <div class="wallet__label">My wallet address</div>
+                  <div class="wallet__edit"><img src="img/svg/edit.svg" alt=""></div>
+                  <div class="wallet__balance"><span class="current_balance">0</span> XMR</div>
+                </div>
+                <div class="field-with-icon field--big field--gray">
+                  <input type="text" class="wallet-address" value="loading..." disabled>
+                </div>
+              </div>
+              <div class="send-data">
+                <div class="field field--gray field--fullwidth">
+                  <input id="send-address" type="text" placeholder="Receiver Monero address" data-vd-type="required">
+                </div>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-8 pl0">
+                      <div class="field-with-icon field--gray field--fullwidth field--with-type">
+                        <input id="send-amount" type="text" placeholder="Amount" data-vd-type="number">
+                        <div class="field-icon">XMR</div>
+                      </div>
+                    </div>
+                    <div class="col-md-8 pr0">
+                      <div class="field field--gray field--fullwidth field--with-hint">
+                        <div class="field__hint field__hint--right">optional</div>
+                        <input id="send-payment-id" type="text" placeholder="Payement ID">
+                      </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-4">
+                      <div class="btn btn--green btn--long" id="try-send-transaction">SEND PAYEMENT</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tabs__content" data-tab-index="3">
+      <div id="exchange-tab">
+        <div v-if="!show_payment" class="container-fluid">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+              <form action="" class="exchange">
+                <div id="exchange-data" class="exchange-data">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-md-6 pl0">
+                        <div class="field field--gray field--fullwidth field--with-hint">
+                          <div class="field__hint field__hint">Currency</div>
+                          <select name="" v-model="currency">
+                            <option v-for="curr in currencies" v-bind:value="curr">{{CURRENCIES[curr]}}</option>
+                          </select>
+                          <img src="img/svg/arrow-down.svg" alt="">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="field field--gray field--fullwidth field--with-hint field--text-right">
+                          <div class="field__hint">Pay</div>
+                          <input type="text" v-bind:class="{invalid:!validation.pay}" v-model.number="pay" value="0.0" data-vd-type="number">
+                        </div>
+                      </div>
+                      <div class="col-md-6 pr0">
+                        <div class="field field--gray field--fullwidth field--with-hint field--text-right">
+                          <div class="field__hint">Receive</div>
+                          <input type="text" v-bind:value="receive" disabled id="exchange-receive">
+                        </div>
+                      </div>
+                      <div class="col-md-16 pl0 pr0">
+                        <div class="field field--gray field--fullwidth field--with-hint">
+                          <div class="field__hint">To</div>
+                          <input type="text" class="wallet-address" v-bind:value="address" disabled>
+                        </div>
+                      </div>
+                      <div class="col-md-8 pl0">
+                        <a href="https://changelly.com" target="_blank" class="changelly green">Powered by <span
+                            class="underlined">Changelly</span></a>
+                      </div>
+                      <div class="col-md-8 pr0">
+                        <div class="btn btn--green btn--long btn--right" v-on:click="toExchangePayment">
+                          <span>Exchange</span>
+                          <img src="img/svg/arrow-right.svg" alt="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div v-else class="container-fluid">
+          <div class="row">
+            <div class="col-md-4 col-md-offset-6">
+              <div id="exchange-payment" class="exchange-steps">
+                <div class="block block--white exchange-step">
+                  <p>Send {{pay}} BTC to the provided address:</p>
+                  <div class="field field--gray field--fullwidth">
+                    <textarea id="exchange-address" v-bind:value="payment_address" disabled></textarea>
+                  </div>
+                  <div id="copy-exchange-address" v-on:click="copyPaymentAddress" class="btn btn--blue btn--small">Copy</div>
+                  <div class="qr">
+                    <img v-bind:src="qr_uri" alt="">
+                  </div>
+                  <div class="exchange-status">
+                    Transaction status
+                  </div>
+                  <div class="exchange-progress">{{payment_status}}</div>
+                </div>
+                <div class="block block--white block--small exchange-step gray-medium">
+                  <div class="step__title">step 2</div>
+                  <div class="light">Wait a few wiuertes for blockchain configuration and exchange</div>
+                </div>
+                <div class="block block--white block--small exchange-step gray-medium">
+                  <div class="step__title">step 3</div>
+                  <div class="light">Receive ~ <b>500 XMR</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div id="tooltip" class="tooltip">
+  <div class="tooltip__title">Details</div>
+  <div class="tooltip__content">
+    <table class="transaction-details-table">
+      <tr>
+        <td>Transaction ID:</td>
+        <td id="tx-payment-id">?</td>
+      </tr>
+      <tr>
+        <td>Date:</td>
+        <td id="tx-date">?</td>
+      </tr>
+      <tr>
+        <td>Time:</td>
+        <td id="tx-time">?</td>
+      </tr>
+      <tr>
+        <td>Fee:</td>
+        <td id="tx-fee"></td>
+      </tr>
+      <tr>
+        <td>Hash:</td>
+        <td id="tx-id" class="transaction-details-table__hash"></td>
+      </tr>
+      <tr>
+        <td>MixIn:</td>
+        <td id="tx-mixin"></td>
+      </tr>
+      <tr>
+        <td>Confirmation:</td>
+        <td id="tx-confirmations"></td>
+      </tr>
+    </table>
+  </div>
+  <div class="tooltip__close"><img src="img/svg/cross.svg" alt=""></div>
+</div>

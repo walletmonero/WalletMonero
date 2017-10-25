@@ -1,0 +1,85 @@
+<header>
+  <div class="logo">
+    <a href="/"><img src="assets/img/svg/logo-wallet-monero.svg" alt=""></a>
+  </div>
+</header>
+<main>
+  <section class="main-banner">
+    <div class="main-banner__content">
+      <div *ngIf="stepNumber == 1" class="container-fluid">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-4 white">
+            <h1>Your account is created</h1>
+          </div>
+          <div class="col-md-6 col-md-offset-5 white tal">
+            <h3>Your passphrase</h3>
+            <div class="note">Passphrase is your private keys to use Monero funds. We wont be able to recover it.
+              So keep it backed up  in a secure, private place.</div>
+          </div>
+          <div class="col-md-6 col-md-offset-5 white tal">
+            <input type="hidden" id="passphrase-data" disabled value="sdf98asfh8uihzs874o8jkhs7iet7agjdifuhy89yhsdf98asfh8skjdh960uzx">
+            <div class="passphrase">
+              <div *ngFor="let piece of seedSlices; let i=index" class="passphrase__item">
+                <div class="passphrase__item-number">{{i+1}}</div>
+                <div class="passphrase__item-content">{{piece}}</div>
+              </div>
+              <!--<div class="passphrase__item">-->
+                <!--<div class="passphrase__item-number">2.</div>-->
+                <!--<div class="passphrase__item-content">loading...</div>-->
+              <!--</div>-->
+              <!--<div class="passphrase__item">-->
+                <!--<div class="passphrase__item-number">3.</div>-->
+                <!--<div class="passphrase__item-content">loading...</div>-->
+              <!--</div>-->
+              <!--<div class="passphrase__item">-->
+                <!--<div class="passphrase__item-number">4.</div>-->
+                <!--<div class="passphrase__item-content">loading...</div>-->
+              <!--</div>-->
+              <!--<div class="passphrase__item">-->
+                <!--<div class="passphrase__item-number">5.</div>-->
+                <!--<div class="passphrase__item-content">loading...</div>-->
+              <!--</div>-->
+              <!--<div class="passphrase__item">-->
+                <!--<div class="passphrase__item-number">6.</div>-->
+                <!--<div class="passphrase__item-content">loading...</div>-->
+              <!--</div>-->
+            </div>
+            <div id="passphrase-copy" class="passphrase__copy" appCopyOnClick [copySource]="seed">
+              Copy
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-md-offset-5 white tal">
+            <div class="block">
+              <div class="btn btn--green btn--long" (click)="confirm()">I’ve written down my private login key</div>
+              <div class="note white">if you already have an account <a href="/login" class="white underlined">login</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="stepNumber == 2" class="container-fluid">
+        <div class="row">
+          <div class="col-md-7 col-md-offset-5 white tal">
+            <h3>Confirm you ve secured your private key</h3>
+            <div class="note">Enter your private key to filed below and start using your own monero wallet</div>
+          </div>
+          <div class="col-md-7 col-md-offset-5 white tal">
+            <div action="" class="login-form login-form--registration">
+              <div class="field-with-icon">
+                <input id="passphrase-confirm" [(ngModel)]="inputSeed" class="onscreenkeyboard" type="password" placeholder="confirm your private login key">
+                <div id="keyboard-trigger" class="field-icon"><img src="assets/img/svg/keybord.svg" alt=""></div>
+              </div>
+              <div (click)="tryLogin()" class="login btn btn--green btn--medium">Login</div>
+            </div>
+            <div (click)="stepNumber=1" class="btn btn--transparent btn--medium btn--left">
+              <span>Back</span>
+              <img src="assets/img/svg/arrow-left.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>

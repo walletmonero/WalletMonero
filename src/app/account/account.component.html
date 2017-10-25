@@ -1,0 +1,194 @@
+<header class="header-with-controls">
+  <div class="logo">
+    <a href="/"><img src="assets/img/svg/logo-wallet-monero.svg" alt=""></a>
+  </div>
+  <div class="header-controls">
+    <a href="/">Logout</a>
+    <a href="support.html">Support</a>
+  </div>
+</header>
+<main>
+  <div id="app-state" class="hidden" data-app-state="account"></div>
+  <section class="account-banner">
+    <div class="account-banner__bg" style="background-image: url('assets/img/svg/waves.svg')"></div>
+    <div class="account-banner__content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-4 col-md-offset-9 tar">
+            <div class="white"><b class="current_balance">{{balance | number: '1.2-2'}}</b> XMR</div>
+            <div class="white"><b>~ </b><b id="current_usd">{{ balance*priceUsd | number: '1.1-1'}}</b> USD</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="account">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-3">
+          <div class="tabs">
+            <div class="tabs__labels">
+              <div class="tabs__label" [ngClass]="{'active': currentTab == 0}" (click)="currentTab = 0">
+                <div class="radio"><span></span></div>
+                <span>My accounts</span>
+              </div>
+              <div class="tabs__label" [ngClass]="{'active': currentTab == 1}" (click)="currentTab = 1">
+                <div class="radio"><span></span></div>
+                <span>Transactions</span>
+              </div>
+              <div class="tabs__label" [ngClass]="{'active': currentTab == 2}" (click)="currentTab = 2">
+                <div class="radio"><span></span></div>
+                <span>Send</span>
+              </div>
+              <div class="tabs__label" [ngClass]="{'active': currentTab == 3}" (click)="currentTab = 3">
+                <div class="radio"><span></span></div>
+                <span>Exchange</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tabs__contents">
+      <div class="tabs__content" [ngClass]="{'active': currentTab == 0}" (click)="currentTab = 0">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+              <div action="" class="wallet-address">
+                <div class="wallet">
+                  <div class="wallet__info">
+                    <div class="wallet__label">My wallet address</div>
+                    <div class="wallet__edit"><img src="assets/img/svg/edit.svg" alt=""></div>
+                    <div class="wallet__balance"><span class="current_balance">{{balance | number: '1.2-2'}}</span> XMR</div>
+                  </div>
+                  <div class="field-with-icon field--big field--gray">
+                    <input type="text" class="wallet-address" value="{{accountData.address | spread: 32}}" disabled>
+                    <div class="field-icon" (click)="toogleQR()">
+                      <img *ngIf="!showQR" id="toggle-qr" src="assets/img/svg/qr.svg" alt="">
+                      <img *ngIf="showQR" src="assets/img/svg/eye.svg" alt="">
+                    </div>
+                  </div>
+                  <div id="copy-wallet-address" class="btn btn--white btn--extra-small" appCopyOnClick [copySource]="accountData.address">Copy</div>
+                  <div class="clearfix"></div>
+                  <div class="wallet__qr" *ngIf="showQR">
+                    <app-qrcode [source]="accountData.address"></app-qrcode>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tabs__content" [ngClass]="{'active': currentTab == 1}" (click)="currentTab = 1">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+
+              <!--<div class="field field&#45;&#45;gray">-->
+                <!--<input type="text" id="import-height" placeholder="Height to restore from">-->
+              <!--</div>-->
+
+              <div id="import-progress"></div>
+              <table id="transactions-table" class="table transactions-table">
+                <tr class="table__head">
+                  <th>Wallet</th>
+                  <th>Amount</th>
+                  <th>Transaction ID</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                </tr>
+                <tr class="table__empty-tr"></tr>
+                <tr class="table__empty-tr" *ngIf=""></tr>
+                <tr *ngFor="let tx of shownTransactions; let i=index;">
+                  <td>{{transactionType(tx)}}</td>
+                  <td>
+                    <div class="transactions-table__xmr bold">{{tx.approx_float_amount | number : '1.3-3'}} XMR</div>
+                    <div class="transactions-table__usd">{{tx.approx_float_amount*priceUsd | number : '1.1-1'}} USD</div>
+                  </td>
+                  <td>{{tx.payment_id}}</td>
+                  <td>{{tx.timestamp | date: 'dd.MM.y'}}</td>
+                  <td (click)="showDetails($event,i)">
+                    <div class="transactions-table__time">{{tx.timestamp | date: 'HH:mm:ss'}}</div>
+                    <div class="transactions-table__details">details</div>
+                  </td>
+                </tr>
+              </table>
+              <div class="load-more" id="transaction-load" *ngIf="showLoadBtn" (click)="loadMore()">load more</div>
+              <div class="import-transactions" *ngIf="transactions.length === 0 && !showImportInfo">
+                <div class="import-transactions__text">There are no imported transactions yet</div>
+                <div class="import-transactions__btn" *ngIf="!isImporting">
+                  <div  class="btn btn--green" (click)="tryImport()">Import transactions</div>
+                </div>
+              </div>
+              <div class="block block--white exchange-step import-step" *ngIf="showImportInfo">
+                <div class="import-step__content">
+                  <div class="note">To import the transaction history, we need to scan all the blocks in the blockchain, this is a very resource task, so we ask for a small fee.</div>
+                  <p>Send {{importFee | number: '1.2-2'}} XMR to the provided address:</p>
+                  <div class="field field--gray field--fullwidth">
+                    <textarea id="exchange-address" [(ngModel)]="paymentAddress" disabled></textarea>
+                  </div>
+                  <div id="copy-exchange-address" appCopyOnClick onclick [copySource]="paymentAddress" class="btn btn--blue btn--small">Copy</div>
+                  <div class="qr">
+                    <app-qrcode [source]="paymentAddress" [size]="200"></app-qrcode>
+                  </div>
+                  <div class="exchange-status">Transaction status</div>
+                  <div *ngIf="!isImporting" class="exchange-progress" style="background-image: url('assets/img/svg/load-exchange.svg')">{{paymentStatus}}</div>
+                  <div *ngIf="isImporting" class="exchange-progress" style="background-image: url('assets/img/svg/load-exchange.svg')">Imporing status: {{accountData.accountScannedBlockHeight / accountData.blockchainHeight | percent: '1.2-2'}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="send-transaction" class="tabs__content" [ngClass]="{'active': currentTab == 2}" (click)="currentTab = 2">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+              <div action="" class="wallet-address">
+                <div class="wallet wallet--send">
+                  <div class="wallet__info">
+                    <div class="wallet__label">My wallet address</div>
+                    <div class="wallet__edit"><img src="assets/img/svg/edit.svg" alt=""></div>
+                    <div class="wallet__balance"><span class="current_balance">{{balance | number: '1.2-2' }}</span> XMR</div>
+                  </div>
+                  <div class="field-with-icon field--big field--gray">
+                    <input type="text" class="wallet-address" value="{{accountData.address | spread: 32}}" disabled>
+                  </div>
+                </div>
+                <div class="send-data">
+                  <div class="field field--gray field--fullwidth">
+                    <input id="send-address" type="text" placeholder="Receiver Monero address" [(ngModel)]="sendAddress">
+                  </div>
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-md-8 pl0">
+                        <div class="field-with-icon field--gray field--fullwidth field--with-type">
+                          <input id="send-amount" type="text"  placeholder="Amount" [(ngModel)]="sendAmount" >
+                          <div class="field-icon">XMR</div>
+                        </div>
+                      </div>
+                      <div class="col-md-8 pr0">
+                        <div class="field field--gray field--fullwidth field--with-hint">
+                          <div class="field__hint field__hint--right">optional</div>
+                          <input id="send-payment-id" type="text" placeholder="Payement ID" [(ngModel)]="sendId">
+                        </div>
+                      </div>
+                      <div class="col-md-8 col-md-offset-4">
+                        <div class="btn btn--green btn--long" (click)="startSending()" id="try-send-transaction">SEND PAYEMENT</div>
+                        <div>{{sendMessage}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tabs__content" [ngClass]="{'active': currentTab == 3}" (click)="currentTab = 3">
+        <app-exchange [address]="accountData.address"></app-exchange>
+      </div>
+    </div>
+  </section>
+  <app-tx-details></app-tx-details>
+</main>
